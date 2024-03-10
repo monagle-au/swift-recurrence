@@ -91,58 +91,20 @@ extension RecurrenceRule : Recurrable {
         return stack.date(after: date, options: options)
     }
     
-    var interval : Interval {
-        get {
-            switch self {
-            case .daily(let every):
-                return every.recurringDays
-            case .weekly(let every, _):
-                return every.recurringWeeks
-            case .monthly(let every, _):
-                return every.recurringMonths
-            case .monthlyOrdinal(let every, _, _):
-                return every.recurringMonths
-            case .annually(let every, _, _):
-                return every.recurringYears
-            case .annuallyOrdinal(let every, _ , _, _):
-                return every.recurringYears
-            }
-        }
-    }
-    
-    var stack : Recurrable {
+    var stack : RecurrableStack {
         switch self {
-        case .daily(_):
-            return RecurrableStack(arrayLiteral:
-                interval
-            )
-        case .weekly(_, let days):
-            return RecurrableStack(arrayLiteral:
-                interval,
-                RecurrenceDaysInWeekSelector(daysOfWeek: days)
-            )
-        case .monthly(_, let days):
-            return RecurrableStack(arrayLiteral:
-                interval,
-                RecurrenceDaysInMonthSelector(days: days)
-            )
-        case .monthlyOrdinal(_, let ordinal, let daysOfWeek):
-            return RecurrableStack(arrayLiteral:
-                interval,
-                RecurrenceOrdinalDaysInMonthSelector(ordinal: ordinal, days: daysOfWeek)
-            )
-        case .annually(_, let months, let days):
-            return RecurrableStack(arrayLiteral:
-                interval,
-                RecurrenceMonthsInYearSelector(months: months),
-                RecurrenceDaysInMonthSelector(days: days)
-            )
-        case .annuallyOrdinal(_, let months, let onThe, let daysOfWeek):
-            return RecurrableStack(arrayLiteral:
-                interval,
-                RecurrenceMonthsInYearSelector(months: months),
-                RecurrenceOrdinalDaysInMonthSelector(ordinal: onThe, days: daysOfWeek)
-            )
+        case .daily(let every):
+            .dailyStack(every: every)
+        case .weekly(let every, let days):
+            .weeklyStack(every: every, days: days)
+        case .monthly(let every, let days):
+            .monthlyStack(every: every, days: days)
+        case .monthlyOrdinal(let every, let ordinal, let daysOfWeek):
+                .monthlyOrdinalStack(every: every, onThe: ordinal, daysOfWeek)
+        case .annually(let every, let months, let days):
+            .annualStack(every: every, in: months, days: days)
+        case .annuallyOrdinal(let every, let months, let ordinal, let daysOfWeek):
+            .annuallyOrdinalStack(every: every, in: months, onThe: ordinal, daysOfWeek)
         }
     }
 }

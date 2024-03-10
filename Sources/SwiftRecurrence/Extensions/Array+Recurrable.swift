@@ -8,7 +8,7 @@
 import Foundation
 
 /// An alias to allow easy creations of Recurrable stacks
-typealias RecurrableStack = Array<Recurrable>
+public typealias RecurrableStack = Array<Recurrable>
 
 
 // MARK: - Array Extension to make a stack of Recurrable objects Recurrable
