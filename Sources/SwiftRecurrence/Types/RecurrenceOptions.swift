@@ -12,12 +12,8 @@ public struct RecurrenceOptions : Codable {
     public let startDate : Date?
     /// If set, the recurrence will end on or before the given date
     public let endDate : Date?
-    /// Limits the recurrence to a number of dates
-    public let limit : Int?
     /// Specified the calendar used for the recurrence
     public let calendar: Calendar
-    
-    
     
     /// Generates a date to start a new recurrence from. This will use the `startDate` if it is set, or the current date
     /// - Returns: The starting date
@@ -25,10 +21,9 @@ public struct RecurrenceOptions : Codable {
         startDate ?? calendar.startOfDay(for: Date())
     }
     
-    public init(startDate: Date? = nil, endDate: Date? = nil, limit: Int? = nil, calendar: Calendar = Calendar.current) {
+    public init(startDate: Date? = nil, endDate: Date? = nil, calendar: Calendar = Calendar.current) {
         self.startDate = startDate
         self.endDate = endDate
-        self.limit = limit
         self.calendar = calendar
     }
     
