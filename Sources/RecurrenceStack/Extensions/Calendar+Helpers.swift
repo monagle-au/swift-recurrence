@@ -5,18 +5,10 @@
 //  Copyright © 2023 Monagle. All rights reserved.
 //
 
+import RecurrenceCore
 import Foundation
 
 public extension Calendar {
-    /// Returns the number of days in the month of the given date.
-    ///
-    /// - Parameter date: The date for the month to be determined.
-    /// - Returns: The number of days in the month.
-    func daysInMonth(of date: Date) -> Int {
-        guard let range = self.range(of: .day, in: .month, for: date) else { fatalError("Unable to determine the number of days in month for: \(date)") }
-        return range.count
-    }
-    
     func datesAreWithinSameWeek(_ date1: Date, _ date2: Date) -> Bool {
         let calendar = Calendar.current
         

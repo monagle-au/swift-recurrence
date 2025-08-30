@@ -5,6 +5,7 @@
 //  Created by David Monagle on 1/4/19.
 //
 
+import RecurrenceCore
 import Foundation
 
 public class RecurrenceDaysInWeekSelector : Recurrable, Codable {

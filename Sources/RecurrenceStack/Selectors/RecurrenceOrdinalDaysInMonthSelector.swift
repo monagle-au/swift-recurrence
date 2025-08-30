@@ -5,9 +5,10 @@
 //  Created by David Monagle on 19/7/19.
 //
 
+import RecurrenceCore
 import Foundation
 
-public class RecurrenceOrdinalDaysInMonthSelector: Recurrable, Codable {
+public struct RecurrenceOrdinalDaysInMonthSelector: Recurrable, Codable {
     public var intervalUnit : Interval.Unit { return .day }
     
     var ordinal: RecurrenceMonthlyOrdinal
@@ -85,5 +86,21 @@ public class RecurrenceOrdinalDaysInMonthSelector: Recurrable, Codable {
             return options.calendar.date(from: components)
         }
         return nil
+    }
+}
+
+extension RecurrenceMonthlyOrdinal {
+    func daysOfMonth(for date: Date, options: RecurrenceOptions) -> (first: Int, last: Int)? {
+        let daysInMonth = options.calendar.daysInMonth(of: date)
+
+        switch self {
+        case .last:
+            return (daysInMonth - 6, daysInMonth)
+        default:
+            let firstDay = ((self.rawValue - 1) * 7) + 1
+            let lastDay = firstDay + 6
+            if firstDay > daysInMonth { return nil }
+            return (firstDay, lastDay > daysInMonth ? daysInMonth : lastDay)
+        }
     }
 }

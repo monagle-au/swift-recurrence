@@ -6,7 +6,7 @@
 //
 
 import XCTest
-@testable import SwiftRecurrence
+@testable import RecurrenceStack
 
 class RecurrenceRule_CodableTests: XCTestCase {
     func testCodableDaily() {
@@ -27,7 +27,7 @@ class RecurrenceRule_CodableTests: XCTestCase {
         let encoder = JSONEncoder()
         let decoder = JSONDecoder()
         
-        let recurrence = RecurrenceRule.weekly(every: 2, days: [.Monday, .Friday])
+        let recurrence = RecurrenceRule.weekly(every: 2, days: [.monday, .friday])
         let encoded = try! encoder.encode(recurrence)
         let decoded = try! decoder.decode(RecurrenceRule.self, from: encoded)
         guard case let RecurrenceRule.weekly(interval, days) = decoded else {
@@ -35,7 +35,7 @@ class RecurrenceRule_CodableTests: XCTestCase {
             return
         }
         XCTAssertEqual(interval, 2)
-        XCTAssertEqual(days, [.Monday, .Friday])
+        XCTAssertEqual(days, [.monday, .friday])
     }
     
     func testCodableMonthlyDays() {
@@ -57,7 +57,7 @@ class RecurrenceRule_CodableTests: XCTestCase {
         let encoder = JSONEncoder()
         let decoder = JSONDecoder()
         
-        let recurrence = RecurrenceRule.monthlyOrdinal(every: 4, onThe: .second, [.Saturday])
+        let recurrence = RecurrenceRule.monthlyOrdinal(every: 4, onThe: .second, [.saturday])
         let encoded = try! encoder.encode(recurrence)
         let decoded = try! decoder.decode(RecurrenceRule.self, from: encoded)
         guard case let RecurrenceRule.monthlyOrdinal(interval, onThe, days) = decoded else {
@@ -66,14 +66,14 @@ class RecurrenceRule_CodableTests: XCTestCase {
         }
         XCTAssertEqual(interval, 4)
         XCTAssertEqual(onThe, .second)
-        XCTAssertEqual(days, [.Saturday])
+        XCTAssertEqual(days, [.saturday])
     }
     
     func testCodableAnnually() {
         let encoder = JSONEncoder()
         let decoder = JSONDecoder()
         
-        let recurrence = RecurrenceRule.annually(every: 3, in: [.June, .October], days: [3, 8])
+        let recurrence = RecurrenceRule.annually(every: 3, in: [.june, .october], days: [3, 8])
         let encoded = try! encoder.encode(recurrence)
         let decoded = try! decoder.decode(RecurrenceRule.self, from: encoded)
         guard case let RecurrenceRule.annually(interval, months, days) = decoded else {
@@ -81,7 +81,7 @@ class RecurrenceRule_CodableTests: XCTestCase {
             return
         }
         XCTAssertEqual(interval, 3)
-        XCTAssertEqual(months, [.June, .October])
+        XCTAssertEqual(months, [.june, .october])
         XCTAssertEqual(days, [3, 8])
     }
     
@@ -89,7 +89,7 @@ class RecurrenceRule_CodableTests: XCTestCase {
         let encoder = JSONEncoder()
         let decoder = JSONDecoder()
         
-        let recurrence = RecurrenceRule.annuallyOrdinal(every: 5, in: [.April, .December], onThe: .last, [.Friday])
+        let recurrence = RecurrenceRule.annuallyOrdinal(every: 5, in: [.april, .december], onThe: .last, [.friday])
         let encoded = try! encoder.encode(recurrence)
         let decoded = try! decoder.decode(RecurrenceRule.self, from: encoded)
         guard case let RecurrenceRule.annuallyOrdinal(interval, months, onThe, days) = decoded else {
@@ -97,8 +97,8 @@ class RecurrenceRule_CodableTests: XCTestCase {
             return
         }
         XCTAssertEqual(interval, 5)
-        XCTAssertEqual(months, [.April, .December])
+        XCTAssertEqual(months, [.april, .december])
         XCTAssertEqual(onThe, .last)
-        XCTAssertEqual(days, [.Friday])
+        XCTAssertEqual(days, [.friday])
     }
 }

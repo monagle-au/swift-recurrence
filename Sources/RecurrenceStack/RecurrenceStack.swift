@@ -1,14 +1,7 @@
-//
-//  Array+Recurrable.swift
-//  Recurrence
-//
-//  Created by David Monagle on 1/4/19.
-//
-
 import Foundation
 
 /// An alias to allow easy creations of Recurrable stacks
-public typealias RecurrableStack = Array<Recurrable>
+public typealias RecurrenceStack = Array<Recurrable>
 
 
 // MARK: - Array Extension to make a stack of Recurrable objects Recurrable

@@ -4,6 +4,7 @@
 //  Created by David Monagle
 //
 
+import RecurrenceCore
 import Foundation
 
 extension Date {

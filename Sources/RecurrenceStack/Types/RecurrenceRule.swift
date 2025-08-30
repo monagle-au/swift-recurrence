@@ -6,6 +6,7 @@
 //  Copyright © 2019 Monagle. All rights reserved.
 //
 
+import RecurrenceCore
 import Foundation
 
 public enum RecurrenceRule: Equatable {
@@ -91,7 +92,7 @@ extension RecurrenceRule : Recurrable {
         return stack.date(after: date, options: options)
     }
     
-    var stack : RecurrableStack {
+    var stack : RecurrenceStack {
         switch self {
         case .daily(let every):
             .dailyStack(every: every)

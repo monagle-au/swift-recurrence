@@ -5,6 +5,7 @@
 //  Created by David Monagle on 1/4/19.
 //
 
+import RecurrenceCore
 import Foundation
 
 public class RecurrenceMonthsInYearSelector : Recurrable, Codable {
@@ -22,14 +23,14 @@ public class RecurrenceMonthsInYearSelector : Recurrable, Codable {
     }
     
     public func first(for date: Date, options: RecurrenceOptions) -> Date? {
-        let month = months.sorted().first ?? .January
+        let month = months.sorted().first ?? .january
         var components = options.calendar.dateComponents([.year], from: date)
         components.month = month.rawValue
         return options.calendar.date(from: components)
     }
     
     public func last(for date: Date, options: RecurrenceOptions) -> Date? {
-        let month = months.sorted().last ?? .December
+        let month = months.sorted().last ?? .december
         var components = options.calendar.dateComponents([.year], from: date)
         components.month = month.rawValue
         components.day = month.numberOfDays(year: options.calendar.component(.year, from: date), calendar: options.calendar)

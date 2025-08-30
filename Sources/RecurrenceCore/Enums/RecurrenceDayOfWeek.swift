@@ -1,13 +1,13 @@
 import Foundation
 
-public enum RecurrenceDayOfWeek : Int, Codable, RawComparable, CaseIterable {
-    case Sunday = 1
-    case Monday
-    case Tuesday
-    case Wednesday
-    case Thursday
-    case Friday
-    case Saturday
+public enum RecurrenceDayOfWeek : Int, Sendable, Codable, RawComparable, CaseIterable {
+    case sunday = 1
+    case monday
+    case tuesday
+    case wednesday
+    case thursday
+    case friday
+    case saturday
 }
 
 extension RecurrenceDayOfWeek {
@@ -26,16 +26,16 @@ extension RecurrenceDayOfWeek {
         return Set<RecurrenceDayOfWeek>(days)
     }
     
-    public static var All = Set(RecurrenceDayOfWeek.allCases)
-    public static var Weekdays: Set<RecurrenceDayOfWeek> = [.Monday, .Tuesday, .Wednesday, .Thursday, .Friday]
-    public static var Weekend: Set<RecurrenceDayOfWeek> = [.Saturday, .Sunday]
+    public static let all = Set(RecurrenceDayOfWeek.allCases)
+    public static let weekdays: Set<RecurrenceDayOfWeek> = [.monday, .tuesday, .wednesday, .thursday, .friday]
+    public static let weekend: Set<RecurrenceDayOfWeek> = [.saturday, .sunday]
     
     public var isWeekday : Bool {
-        get { return RecurrenceDayOfWeek.Weekdays.contains(self) }
+        get { return RecurrenceDayOfWeek.weekdays.contains(self) }
     }
     
     public var isWeekend : Bool {
-        get { return RecurrenceDayOfWeek.Weekend.contains(self) }
+        get { return RecurrenceDayOfWeek.weekend.contains(self) }
     }
     
     public func next() -> RecurrenceDayOfWeek {
@@ -44,7 +44,7 @@ extension RecurrenceDayOfWeek {
 }
 
 extension Set where Element == RecurrenceDayOfWeek {
-    public static var Weekdays = RecurrenceDayOfWeek.Weekdays
-    public static var Weekend = RecurrenceDayOfWeek.Weekend
-    public static var All = RecurrenceDayOfWeek.All
+    public static let weekdays = RecurrenceDayOfWeek.weekdays
+    public static let weekend = RecurrenceDayOfWeek.weekend
+    public static let all = RecurrenceDayOfWeek.all
 }

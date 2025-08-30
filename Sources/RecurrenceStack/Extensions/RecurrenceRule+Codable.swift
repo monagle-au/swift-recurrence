@@ -6,6 +6,7 @@
 //  Copyright © 2019 Monagle. All rights reserved.
 //
 
+import RecurrenceCore
 import Foundation
 
 extension RecurrenceRule: Codable {
