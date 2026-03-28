@@ -11,47 +11,27 @@ let package = Package(
     products: [
         .library(
             name: "SwiftRecurrence",
-            targets: ["RecurrenceCore", "RecurrenceRule", "RecurrenceStack"]
+            targets: ["RecurrenceRule"]
         ),
         .library(
             name: "SwiftRecurrenceUI",
+            type: .dynamic,
             targets: ["RecurrenceUI"]
         ),
     ],
     targets: [
         .target(
-            name: "RecurrenceCore"
-        ),
-        .target(
-            name: "RecurrenceRule",
-            dependencies: [
-                "RecurrenceCore"
-            ]
-        ),
-        .target(
-            name: "RecurrenceStack",
-            dependencies: [
-                "RecurrenceCore"
-            ]
+            name: "RecurrenceRule"
         ),
         .target(
             name: "RecurrenceUI",
             dependencies: [
-                "RecurrenceCore",
                 "RecurrenceRule"
             ]
         ),
         .testTarget(
-            name: "RecurrenceCoreTests",
-            dependencies: ["RecurrenceCore"]
-        ),
-        .testTarget(
             name: "RecurrenceRuleTests",
             dependencies: ["RecurrenceRule"]
-        ),
-        .testTarget(
-            name: "RecurrenceStackTests",
-            dependencies: ["RecurrenceStack"]
         ),
     ]
 )

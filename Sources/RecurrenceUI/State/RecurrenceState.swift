@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import RecurrenceCore
 import RecurrenceRule
 
 @Observable class RecurrenceState {
@@ -16,8 +15,8 @@ import RecurrenceRule
     var end: RecurrenceRule.End
     var monthDaysSelection: MonthDaySelectionPicker.Option = .every
     var daysOfMonth: Set<Int> = []
-    var ordinal: RecurrenceOrdinal = .first
-    var weekDays: Set<RecurrenceDayOfWeek> = []
+    var ordinal: RecurrenceMonthlyOrdinal = .first
+    var weekDays: Set<Locale.Weekday> = []
     var months: Set<RecurrenceMonth> = []
 
     init(recurrenceRule: RecurrenceRule) {
@@ -99,6 +98,8 @@ extension RecurrenceState: Equatable {
     static func == (lhs: RecurrenceState, rhs: RecurrenceState) -> Bool {
         if lhs.frequency != rhs.frequency { return false }
         if lhs.interval != rhs.interval { return false }
+        if lhs.start != rhs.start { return false }
+        if lhs.end != rhs.end { return false }
         if lhs.monthDaysSelection != rhs.monthDaysSelection { return false }
         if lhs.daysOfMonth != rhs.daysOfMonth { return false }
         if lhs.ordinal != rhs.ordinal { return false }

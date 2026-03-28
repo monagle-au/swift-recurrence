@@ -47,11 +47,19 @@ public struct RecurrenceRuleView: View {
             self.rule = recurrence.recurrenceRule
         }
         .toolbar {
+            #if os(iOS) || os(visionOS)
             ToolbarItem(placement: .bottomBar) {
                 NavigationLink("Preview") {
-                    RecurrenceRulePreview(rule.calendar)
+                    RecurrenceRulePreview(rule.calendarRecurrenceRule(.current))
                 }
             }
+            #else
+            ToolbarItem {
+                NavigationLink("Preview") {
+                    RecurrenceRulePreview(rule.calendarRecurrenceRule(.current))
+                }
+            }
+            #endif
         }
     }
     
@@ -62,7 +70,7 @@ public struct RecurrenceRuleView: View {
             case .every:
                 DaysOfMonthSelectionView(selection: $recurrence.daysOfMonth)
             case .onThe:
-                RecurrenceOrdinalPicker($recurrence.ordinal)
+                RecurrenceMonthlyOrdinalPicker($recurrence.ordinal)
                 WeekdayPicker($recurrence.weekDays)
             }
         }

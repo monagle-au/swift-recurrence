@@ -1,5 +1,5 @@
 //
-//  RecurrenceOrdinalPicker.swift
+//  RecurrenceMonthlyOrdinalPicker.swift
 //  SwiftUIRecurrenceRule
 //
 //  Created by David Monagle on 24/2/2025.
@@ -7,18 +7,18 @@
 
 import SwiftUI
 import Foundation
-import RecurrenceCore
+import RecurrenceRule
 
-public struct RecurrenceOrdinalPicker: View {
-    @Binding var ordinal: RecurrenceOrdinal
+public struct RecurrenceMonthlyOrdinalPicker: View {
+    @Binding var ordinal: RecurrenceMonthlyOrdinal
     
-    public init(_ ordinal: Binding<RecurrenceOrdinal>) {
+    public init(_ ordinal: Binding<RecurrenceMonthlyOrdinal>) {
         self._ordinal = ordinal
     }
     
     public var body: some View {
         Picker("On the", selection: $ordinal) {
-            ForEach(RecurrenceOrdinal.allCases, id: \.self) { ordinal in
+            ForEach(RecurrenceMonthlyOrdinal.allCases, id: \.self) { ordinal in
                 Text(ordinal.localizedStringKey)
                     .accessibility(identifier: "monthlyOrdinal\(ordinal.rawValue)")
                     .tag(ordinal)
@@ -28,7 +28,7 @@ public struct RecurrenceOrdinalPicker: View {
     }
 }
 
-extension RecurrenceOrdinal {
+extension RecurrenceMonthlyOrdinal {
     var localizedStringKey: String {
         switch self {
         case .first:
@@ -41,6 +41,8 @@ extension RecurrenceOrdinal {
             "Fourth"
         case .fifth:
             "Fifth"
+        case .secondLast:
+            "2nd Last"
         case .last:
             "Last"
         }
@@ -48,10 +50,10 @@ extension RecurrenceOrdinal {
 }
 
 #Preview {
-    @Previewable @State var ordinal: RecurrenceOrdinal = .third
+    @Previewable @State var ordinal: RecurrenceMonthlyOrdinal = .third
     
     Form {
-        RecurrenceOrdinalPicker($ordinal)
+        RecurrenceMonthlyOrdinalPicker($ordinal)
     }
 }
 

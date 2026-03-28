@@ -27,4 +27,3 @@ struct IntervalStepper: View {
         IntervalStepper(interval: $interval)
     }
 }
-

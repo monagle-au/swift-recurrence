@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import RecurrenceCore
+import RecurrenceRule
 
 public struct MonthSelectionView: View {
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
@@ -29,7 +29,7 @@ public struct MonthSelectionView: View {
                 monthCellView(month)
             }
         }
-        .background(Color(UIColor.systemFill))
+        .background(PlatformColor.systemFill)
         .cornerRadius(3.0)
     }
     
@@ -47,8 +47,8 @@ public struct MonthSelectionView: View {
             .font(.footnote)
             .padding(8)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .foregroundColor(isSelected ? Color(UIColor.systemBackground) : .primary)
-            .background(isSelected ? Color.accentColor : Color(UIColor.secondarySystemBackground))
+            .foregroundColor(isSelected ? PlatformColor.systemBackground : .primary)
+            .background(isSelected ? Color.accentColor : PlatformColor.secondarySystemBackground)
             .accessibility(identifier: "month\(cell.id)")
             .onTapGesture {
                 self.toggle(cell.month)

@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import RecurrenceCore
+import RecurrenceRule
 
 public struct DaysOfMonthSelectionView: View {
     @Binding var daysOfMonth: Set<Int>
@@ -45,12 +45,12 @@ public struct DaysOfMonthSelectionView: View {
         return Text("\(day)")
             .lineLimit(1)
             .minimumScaleFactor(0.5)
-            .foregroundColor(isSelected ? Color(UIColor.systemBackground) : .primary)
+            .foregroundColor(isSelected ? PlatformColor.systemBackground : .primary)
             .accessibility(identifier: "day\(day)")
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
         .aspectRatio(1.0, contentMode: .fit)
-        .background(isSelected ? Color.accentColor : Color(UIColor.secondarySystemBackground))
+        .background(isSelected ? Color.accentColor : PlatformColor.secondarySystemBackground)
         .onTapGesture {
             self.toggle(day)
         }

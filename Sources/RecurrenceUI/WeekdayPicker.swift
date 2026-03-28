@@ -7,17 +7,17 @@
 
 import Foundation
 import SwiftUI
-import RecurrenceCore
+import RecurrenceRule
 
 struct WeekdayPicker: View {
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
-    @Binding var weekdaySelection: Set<RecurrenceDayOfWeek>
+    @Binding var weekdaySelection: Set<Locale.Weekday>
     
     private let multiSelect: Bool
     private let mandatory: Bool
     private let locale: Locale
 
-    public init(_ weekdays: Binding<Set<RecurrenceDayOfWeek>>, multiSelect: Bool = true, mandatory: Bool = false, locale: Locale = .autoupdatingCurrent) {
+    public init(_ weekdays: Binding<Set<Locale.Weekday>>, multiSelect: Bool = true, mandatory: Bool = false, locale: Locale = .autoupdatingCurrent) {
         self._weekdaySelection = weekdays
         self.multiSelect = multiSelect
         self.mandatory = mandatory
@@ -26,11 +26,10 @@ struct WeekdayPicker: View {
     
     var weekdayOptions: [WeekdayOption] {
         let symbols = (horizontalSizeClass == .compact ? locale.calendar.shortWeekdaySymbols : locale.calendar.weekdaySymbols)
-        let weekdays = RecurrenceDayOfWeek.all
-        return weekdays.enumerated().map { index, value in
+        return Locale.Weekday.all.sorted().map { weekday in
             .init(
-                label: Text(symbols[index]),
-                weekday: value
+                label: Text(symbols[weekday.dayNumber - 1]),
+                weekday: weekday
             )
         }
     }
@@ -39,17 +38,17 @@ struct WeekdayPicker: View {
         .init(
             get: {
                 switch weekdaySelection {
-                case Set(RecurrenceDayOfWeek.all): .days
-                case Set(RecurrenceDayOfWeek.weekdays): .weekDays
-                case Set(RecurrenceDayOfWeek.weekend): .weekendDays
+                case Set(Locale.Weekday.all): .days
+                case Set(Locale.Weekday.weekdays): .weekDays
+                case Set(Locale.Weekday.weekend): .weekendDays
                 default: .custom
                 }
         },
             set: { group in
                 switch group {
-                case .days: weekdaySelection = Set(RecurrenceDayOfWeek.all)
-                case .weekDays: weekdaySelection = Set(RecurrenceDayOfWeek.weekdays)
-                case .weekendDays: weekdaySelection = Set(RecurrenceDayOfWeek.weekend)
+                case .days: weekdaySelection = Set(Locale.Weekday.all)
+                case .weekDays: weekdaySelection = Set(Locale.Weekday.weekdays)
+                case .weekendDays: weekdaySelection = Set(Locale.Weekday.weekend)
                 default: break
                 }
             }
@@ -63,7 +62,7 @@ struct WeekdayPicker: View {
                     self.cell(dayOfWeek)
                 }
             }
-            .background(Color(UIColor.systemFill))
+            .background(PlatformColor.systemFill)
             .clipShape(.capsule(style: .continuous))
             if multiSelect {
                 Picker("Day of week group", selection: groupSelection) {
@@ -85,8 +84,8 @@ struct WeekdayPicker: View {
             .font(.footnote)
             .padding(8)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .foregroundColor(isSelected ? Color(UIColor.systemBackground) : .primary)
-            .background(isSelected ? Color.accentColor : Color(UIColor.secondarySystemBackground))
+            .foregroundColor(isSelected ? PlatformColor.systemBackground : .primary)
+            .background(isSelected ? Color.accentColor : PlatformColor.secondarySystemBackground)
             .accessibility(identifier: day.accessibilityLabel)
             .onTapGesture {
                 self.toggle(day)
@@ -121,20 +120,20 @@ extension WeekdayPicker {
     }
     
     struct WeekdayOption: Identifiable {
-        var id: Int { weekday.rawValue }
+        var id: Int { weekday.dayNumber }
         let label: Text
-        let weekday: RecurrenceDayOfWeek
+        let weekday: Locale.Weekday
         var option: some View {
             label.tag(weekday)
         }
         var accessibilityLabel: String {
-            "weekdayPickerOption\(weekday.rawValue)"
+            "weekdayPickerOption\(weekday.dayNumber)"
         }
     }
 }
 
 #Preview {
-    @Previewable @State var weekdays: Set<RecurrenceDayOfWeek> = [.saturday]
+    @Previewable @State var weekdays: Set<Locale.Weekday> = [.saturday]
     
     Form {
         WeekdayPicker($weekdays, multiSelect: true, mandatory: false)
