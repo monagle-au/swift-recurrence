@@ -11,10 +11,10 @@ import Foundation
 public struct RecurrenceOrdinalDaysInMonthSelector: Recurrable, Codable {
     public var intervalUnit : Interval.Unit { return .day }
     
-    var ordinal: RecurrenceMonthlyOrdinal
+    var ordinal: RecurrenceOrdinal
     var days : Set<RecurrenceDayOfWeek> = []
     
-    public init(ordinal: RecurrenceMonthlyOrdinal, days: Set<RecurrenceDayOfWeek> = []) {
+    public init(ordinal: RecurrenceOrdinal, days: Set<RecurrenceDayOfWeek> = []) {
         self.ordinal = ordinal
         self.days = days
     }
@@ -89,7 +89,7 @@ public struct RecurrenceOrdinalDaysInMonthSelector: Recurrable, Codable {
     }
 }
 
-extension RecurrenceMonthlyOrdinal {
+extension RecurrenceOrdinal {
     func daysOfMonth(for date: Date, options: RecurrenceOptions) -> (first: Int, last: Int)? {
         let daysInMonth = options.calendar.daysInMonth(of: date)
 

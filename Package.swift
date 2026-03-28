@@ -5,12 +5,18 @@ import PackageDescription
 let package = Package(
     name: "swift-recurrence",
     platforms: [
-        .macOS(.v13),
+        .macOS(.v15),
+        .iOS(.v18)
     ],
     products: [
         .library(
             name: "SwiftRecurrence",
-            targets: ["RecurrenceCore", "RecurrenceStack"]),
+            targets: ["RecurrenceCore", "RecurrenceRule", "RecurrenceStack"]
+        ),
+        .library(
+            name: "SwiftRecurrenceUI",
+            targets: ["RecurrenceUI"]
+        ),
     ],
     targets: [
         .target(
@@ -27,6 +33,21 @@ let package = Package(
             dependencies: [
                 "RecurrenceCore"
             ]
+        ),
+        .target(
+            name: "RecurrenceUI",
+            dependencies: [
+                "RecurrenceCore",
+                "RecurrenceRule"
+            ]
+        ),
+        .testTarget(
+            name: "RecurrenceCoreTests",
+            dependencies: ["RecurrenceCore"]
+        ),
+        .testTarget(
+            name: "RecurrenceRuleTests",
+            dependencies: ["RecurrenceRule"]
         ),
         .testTarget(
             name: "RecurrenceStackTests",

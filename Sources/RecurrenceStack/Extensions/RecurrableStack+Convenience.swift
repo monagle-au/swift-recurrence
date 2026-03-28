@@ -22,7 +22,7 @@ public extension RecurrenceStack {
         ]
     }
     
-    static func monthlyOrdinalStack(every: Int = 1, onThe ordinal: RecurrenceMonthlyOrdinal, _ daysOfWeek: Set<RecurrenceDayOfWeek>) -> RecurrenceStack {
+    static func monthlyOrdinalStack(every: Int = 1, onThe ordinal: RecurrenceOrdinal, _ daysOfWeek: Set<RecurrenceDayOfWeek>) -> RecurrenceStack {
         [
             every.recurringMonths,
             RecurrenceOrdinalDaysInMonthSelector(ordinal: ordinal, days: daysOfWeek)
@@ -37,7 +37,7 @@ public extension RecurrenceStack {
         ]
     }
 
-    static func annuallyOrdinalStack(every: Int = 1, in months: Set<RecurrenceMonth>, onThe ordinal: RecurrenceMonthlyOrdinal, _ daysOfWeek: Set<RecurrenceDayOfWeek>) -> RecurrenceStack {
+    static func annuallyOrdinalStack(every: Int = 1, in months: Set<RecurrenceMonth>, onThe ordinal: RecurrenceOrdinal, _ daysOfWeek: Set<RecurrenceDayOfWeek>) -> RecurrenceStack {
         [
             every.recurringYears,
             RecurrenceMonthsInYearSelector(months: months),

@@ -13,9 +13,9 @@ public enum RecurrenceRule: Equatable {
     case daily(every: Int)
     case weekly(every: Int, days: Set<RecurrenceDayOfWeek>)
     case monthly(every: Int, days: Set<Int>)
-    case monthlyOrdinal(every: Int, onThe: RecurrenceMonthlyOrdinal, Set<RecurrenceDayOfWeek>)
+    case monthlyOrdinal(every: Int, onThe: RecurrenceOrdinal, Set<RecurrenceDayOfWeek>)
     case annually(every: Int, in: Set<RecurrenceMonth>, days: Set<Int>)
-    case annuallyOrdinal(every: Int, in: Set<RecurrenceMonth>, onThe: RecurrenceMonthlyOrdinal, Set<RecurrenceDayOfWeek>)
+    case annuallyOrdinal(every: Int, in: Set<RecurrenceMonth>, onThe: RecurrenceOrdinal, Set<RecurrenceDayOfWeek>)
 }
 
 public enum RecurrenceError : Error {

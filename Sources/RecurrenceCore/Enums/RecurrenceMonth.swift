@@ -1,6 +1,6 @@
 import Foundation
 
-public enum RecurrenceMonth : Int, Codable, RawComparable, Sendable {
+public enum RecurrenceMonth : Int, Codable, RawComparable, Sendable, CaseIterable  {
     case january = 1
     case february
     case march

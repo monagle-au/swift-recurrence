@@ -1,6 +1,6 @@
 import Foundation
 
-public enum RecurrenceMonthlyOrdinal : Int, Codable, Sendable {
+public enum RecurrenceOrdinal : Int, Codable, Sendable, CaseIterable {
     case first = 1
     case second
     case third

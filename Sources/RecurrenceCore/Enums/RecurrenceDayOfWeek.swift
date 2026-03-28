@@ -26,9 +26,9 @@ extension RecurrenceDayOfWeek {
         return Set<RecurrenceDayOfWeek>(days)
     }
     
-    public static let all = Set(RecurrenceDayOfWeek.allCases)
-    public static let weekdays: Set<RecurrenceDayOfWeek> = [.monday, .tuesday, .wednesday, .thursday, .friday]
-    public static let weekend: Set<RecurrenceDayOfWeek> = [.saturday, .sunday]
+    public static let all = RecurrenceDayOfWeek.allCases
+    public static let weekdays = [Self.monday, .tuesday, .wednesday, .thursday, .friday]
+    public static let weekend = [Self.saturday, .sunday]
     
     public var isWeekday : Bool {
         get { return RecurrenceDayOfWeek.weekdays.contains(self) }
@@ -40,6 +40,25 @@ extension RecurrenceDayOfWeek {
     
     public func next() -> RecurrenceDayOfWeek {
         return RecurrenceDayOfWeek(number: self.rawValue + 1)
+    }
+    
+    public var locale: Locale.Weekday {
+        switch self {
+        case .sunday:
+                .sunday
+        case .monday:
+                .monday
+        case .tuesday:
+                .tuesday
+        case .wednesday:
+                .wednesday
+        case .thursday:
+                .thursday
+        case .friday:
+                .friday
+        case .saturday:
+                .saturday
+        }
     }
 }
 

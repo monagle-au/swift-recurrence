@@ -36,7 +36,7 @@ extension RecurrenceRule: Codable {
             self = .monthly(every: interval, days: days)
         case .monthlyOrdinal:
             let interval = try container.decode(Int.self, forKey: .every)
-            let ordinal = try container.decode(RecurrenceMonthlyOrdinal.self, forKey: .monthlyOrdinal)
+            let ordinal = try container.decode(RecurrenceOrdinal.self, forKey: .monthlyOrdinal)
             let daysOfWeek = try container.decode(Set<RecurrenceDayOfWeek>.self, forKey: .daysOfWeek)
             self = .monthlyOrdinal(every: interval, onThe: ordinal, daysOfWeek)
         case .annually:
@@ -47,7 +47,7 @@ extension RecurrenceRule: Codable {
         case .annuallyOrdinal:
             let interval = try container.decode(Int.self, forKey: .every)
             let months = try container.decode(Set<RecurrenceMonth>.self, forKey: .months)
-            let ordinal = try container.decode(RecurrenceMonthlyOrdinal.self, forKey: .monthlyOrdinal)
+            let ordinal = try container.decode(RecurrenceOrdinal.self, forKey: .monthlyOrdinal)
             let daysOfWeek = try container.decode(Set<RecurrenceDayOfWeek>.self, forKey: .daysOfWeek)
             self = .annuallyOrdinal(every: interval, in: months, onThe: ordinal, daysOfWeek)
             

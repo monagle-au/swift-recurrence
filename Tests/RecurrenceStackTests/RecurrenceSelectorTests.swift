@@ -160,42 +160,42 @@ class RecurrenceSelectorTests: XCTestCase {
         let options = RecurrenceOptions(startDate: .dayMonthYear(1, .january, 2019))
 
         do {
-            let range = RecurrenceMonthlyOrdinal.first.daysOfMonth(for: .dayMonthYear(1, .april, 2019), options: options)
+            let range = RecurrenceOrdinal.first.daysOfMonth(for: .dayMonthYear(1, .april, 2019), options: options)
             XCTAssertEqual(range?.first, 1)
             XCTAssertEqual(range?.last, 7)
         }
 
         do {
-            let range = RecurrenceMonthlyOrdinal.second.daysOfMonth(for: .dayMonthYear(1, .april, 2019), options: options)
+            let range = RecurrenceOrdinal.second.daysOfMonth(for: .dayMonthYear(1, .april, 2019), options: options)
             XCTAssertEqual(range?.first, 8)
             XCTAssertEqual(range?.last, 14)
         }
 
         do {
-            let range = RecurrenceMonthlyOrdinal.third.daysOfMonth(for: .dayMonthYear(1, .april, 2019), options: options)
+            let range = RecurrenceOrdinal.third.daysOfMonth(for: .dayMonthYear(1, .april, 2019), options: options)
             XCTAssertEqual(range?.first, 15)
             XCTAssertEqual(range?.last, 21)
         }
 
         do {
-            let range = RecurrenceMonthlyOrdinal.fourth.daysOfMonth(for: .dayMonthYear(1, .april, 2019), options: options)
+            let range = RecurrenceOrdinal.fourth.daysOfMonth(for: .dayMonthYear(1, .april, 2019), options: options)
             XCTAssertEqual(range?.first, 22)
             XCTAssertEqual(range?.last, 28)
         }
 
         do {
-            let range = RecurrenceMonthlyOrdinal.fifth.daysOfMonth(for: .dayMonthYear(1, .april, 2019), options: options)
+            let range = RecurrenceOrdinal.fifth.daysOfMonth(for: .dayMonthYear(1, .april, 2019), options: options)
             XCTAssertEqual(range?.first, 29)
             XCTAssertEqual(range?.last, 30)
         }
 
         do {
-            let range = RecurrenceMonthlyOrdinal.fifth.daysOfMonth(for: .dayMonthYear(1, .february, 2019), options: options)
+            let range = RecurrenceOrdinal.fifth.daysOfMonth(for: .dayMonthYear(1, .february, 2019), options: options)
             XCTAssertNil(range)
         }
 
         do {
-            let range = RecurrenceMonthlyOrdinal.last.daysOfMonth(for: .dayMonthYear(1, .april, 2019), options: options)
+            let range = RecurrenceOrdinal.last.daysOfMonth(for: .dayMonthYear(1, .april, 2019), options: options)
             XCTAssertEqual(range?.first, 24)
             XCTAssertEqual(range?.last, 30)
         }
