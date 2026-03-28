@@ -18,6 +18,13 @@ let package = Package(
             type: .dynamic,
             targets: ["RecurrenceUI"]
         ),
+        .library(
+            name: "SwiftRecurrenceProtobuf",
+            targets: ["RecurrenceProtobuf"]
+        ),
+    ],
+    dependencies: [
+        .package(url: "https://github.com/apple/swift-protobuf.git", from: "1.28.2"),
     ],
     targets: [
         .target(
@@ -29,9 +36,20 @@ let package = Package(
                 "RecurrenceRule"
             ]
         ),
+        .target(
+            name: "RecurrenceProtobuf",
+            dependencies: [
+                "RecurrenceRule",
+                .product(name: "SwiftProtobuf", package: "swift-protobuf"),
+            ]
+        ),
         .testTarget(
             name: "RecurrenceRuleTests",
             dependencies: ["RecurrenceRule"]
+        ),
+        .testTarget(
+            name: "RecurrenceProtobufTests",
+            dependencies: ["RecurrenceProtobuf"]
         ),
     ]
 )

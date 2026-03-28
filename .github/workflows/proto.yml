@@ -1,0 +1,63 @@
+name: Proto
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'proto/**'
+      - 'buf.yaml'
+      - 'buf.gen.yaml'
+      - 'Dockerfile'
+      - 'docker-compose.yaml'
+  pull_request:
+    paths:
+      - 'proto/**'
+      - 'buf.yaml'
+      - 'buf.gen.yaml'
+      - 'Dockerfile'
+      - 'docker-compose.yaml'
+
+jobs:
+  lint:
+    name: Lint & Breaking Changes
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Fetch main for breaking change detection
+        run: git fetch origin main
+
+      - uses: bufbuild/buf-action@v1
+        with:
+          lint: true
+          push: false
+          breaking: ${{ github.event_name == 'pull_request' }}
+          breaking_against: '.git#branch=origin/main'
+          format: false
+
+  generated-up-to-date:
+    name: Generated code up to date
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: docker/setup-buildx-action@v3
+
+      - name: Build generator image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          load: true
+          tags: recurrence-swift-buf-builder:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Generate code
+        run: docker compose up --exit-code-from buf-builder
+
+      - name: Assert generated code is up to date
+        run: |
+          if ! git diff --exit-code Sources/RecurrenceProtobuf/Generated/; then
+            echo "::error::Generated code is out of date. Run 'make generate' locally and commit the result."
+            exit 1
+          fi
