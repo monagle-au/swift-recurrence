@@ -1,0 +1,10 @@
+services:
+  buf-builder:
+    build: .
+    volumes:
+      - ./buf.yaml:/workspace/buf.yaml
+      - ./buf.gen.yaml:/workspace/buf.gen.yaml
+      - ./proto:/workspace/proto
+      - ./Sources/RecurrenceProtobuf/Generated:/workspace/Sources/RecurrenceProtobuf/Generated
+    working_dir: /workspace
+    command: buf generate

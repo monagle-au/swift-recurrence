@@ -1,0 +1,93 @@
+syntax = "proto3";
+
+package recurrence.v1;
+
+option swift_prefix = "RecurrenceProtoV1";
+
+import "google/protobuf/timestamp.proto";
+
+enum Weekday {
+  WEEKDAY_UNSPECIFIED = 0;
+  WEEKDAY_SUNDAY = 1;
+  WEEKDAY_MONDAY = 2;
+  WEEKDAY_TUESDAY = 3;
+  WEEKDAY_WEDNESDAY = 4;
+  WEEKDAY_THURSDAY = 5;
+  WEEKDAY_FRIDAY = 6;
+  WEEKDAY_SATURDAY = 7;
+}
+
+enum Month {
+  MONTH_UNSPECIFIED = 0;
+  MONTH_JANUARY = 1;
+  MONTH_FEBRUARY = 2;
+  MONTH_MARCH = 3;
+  MONTH_APRIL = 4;
+  MONTH_MAY = 5;
+  MONTH_JUNE = 6;
+  MONTH_JULY = 7;
+  MONTH_AUGUST = 8;
+  MONTH_SEPTEMBER = 9;
+  MONTH_OCTOBER = 10;
+  MONTH_NOVEMBER = 11;
+  MONTH_DECEMBER = 12;
+}
+
+enum MonthlyOrdinal {
+  MONTHLY_ORDINAL_UNSPECIFIED = 0;
+  MONTHLY_ORDINAL_FIRST = 1;
+  MONTHLY_ORDINAL_SECOND = 2;
+  MONTHLY_ORDINAL_THIRD = 3;
+  MONTHLY_ORDINAL_FOURTH = 4;
+  MONTHLY_ORDINAL_FIFTH = 5;
+  MONTHLY_ORDINAL_SECOND_LAST = 6;
+  MONTHLY_ORDINAL_LAST = 7;
+}
+
+message MonthDaysSelection {
+  oneof selection {
+    EveryDay every = 1;
+    OnThe on_the = 2;
+  }
+
+  message EveryDay {
+    repeated int32 days_of_month = 1;
+  }
+
+  message OnThe {
+    MonthlyOrdinal ordinal = 1;
+    repeated Weekday weekdays = 2;
+  }
+}
+
+message RecurrenceRule {
+  int32 interval = 1;
+  google.protobuf.Timestamp start = 2;
+
+  oneof end {
+    google.protobuf.Timestamp end_date = 3;
+    int32 end_occurrences = 4;
+  }
+
+  oneof frequency {
+    Daily daily = 10;
+    Weekly weekly = 11;
+    Monthly monthly = 12;
+    Annually annually = 13;
+  }
+
+  message Daily {}
+
+  message Weekly {
+    repeated Weekday weekdays = 1;
+  }
+
+  message Monthly {
+    MonthDaysSelection days = 1;
+  }
+
+  message Annually {
+    repeated Month months = 1;
+    MonthDaysSelection days = 2;
+  }
+}
