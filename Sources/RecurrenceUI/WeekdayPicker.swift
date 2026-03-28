@@ -9,21 +9,41 @@ import Foundation
 import SwiftUI
 import RecurrenceRule
 
+/// A grid-based view for selecting one or more days of the week.
+///
+/// Displays a horizontal row of day cells (Sun–Sat). On compact width, abbreviated symbols are
+/// used; on regular width, full names are shown. An optional segmented group picker (All /
+/// Weekdays / Weekends) appears below when `multiSelect` is enabled.
+///
+/// - Double-tapping a cell sets the selection to that single day when `mandatory` is `true`,
+///   or clears the selection when `mandatory` is `false`.
+///
+/// ## Parameters
+/// - `weekdays`: Binding to the set of selected weekdays.
+/// - `multiSelect`: When `true` (default), multiple days can be selected simultaneously.
+/// - `mandatory`: When `true`, the selection cannot be reduced to an empty set.
+/// - `locale`: Locale used to determine symbol strings (default `.autoupdatingCurrent`).
 struct WeekdayPicker: View {
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
     @Binding var weekdaySelection: Set<Locale.Weekday>
-    
+
     private let multiSelect: Bool
     private let mandatory: Bool
     private let locale: Locale
 
+    /// Creates a `WeekdayPicker`.
+    /// - Parameters:
+    ///   - weekdays: Binding to the set of selected weekdays.
+    ///   - multiSelect: Allows multiple selections when `true` (default `true`).
+    ///   - mandatory: Prevents the selection from becoming empty when `true` (default `false`).
+    ///   - locale: Locale used to determine symbol strings (default `.autoupdatingCurrent`).
     public init(_ weekdays: Binding<Set<Locale.Weekday>>, multiSelect: Bool = true, mandatory: Bool = false, locale: Locale = .autoupdatingCurrent) {
         self._weekdaySelection = weekdays
         self.multiSelect = multiSelect
         self.mandatory = mandatory
         self.locale = locale
     }
-    
+
     var weekdayOptions: [WeekdayOption] {
         let symbols = (horizontalSizeClass == .compact ? locale.calendar.shortWeekdaySymbols : locale.calendar.weekdaySymbols)
         return Locale.Weekday.all.sorted().map { weekday in
@@ -33,7 +53,7 @@ struct WeekdayPicker: View {
             )
         }
     }
-    
+
     var groupSelection: Binding<WeekdayGroup> {
         .init(
             get: {
@@ -54,7 +74,7 @@ struct WeekdayPicker: View {
             }
         )
     }
-    
+
     var body: some View {
         VStack {
             HStack(spacing: 1) {
@@ -74,10 +94,10 @@ struct WeekdayPicker: View {
             }
         }
     }
-    
+
     private func cell(_ day: WeekdayOption) -> some View {
         let isSelected = weekdaySelection.contains(day.weekday)
-        
+
         return day.label
             .lineLimit(1)
             .minimumScaleFactor(0.5)
@@ -96,7 +116,7 @@ struct WeekdayPicker: View {
                 }
             )
     }
-    
+
     private func toggle(_ day: WeekdayOption) {
         let weekday = day.weekday
         if weekdaySelection.contains(weekday), (!mandatory || weekdaySelection.count > 1) {
@@ -118,7 +138,7 @@ extension WeekdayPicker {
         case weekDays
         case weekendDays
     }
-    
+
     struct WeekdayOption: Identifiable {
         var id: Int { weekday.dayNumber }
         let label: Text
@@ -134,9 +154,8 @@ extension WeekdayPicker {
 
 #Preview {
     @Previewable @State var weekdays: Set<Locale.Weekday> = [.saturday]
-    
+
     Form {
         WeekdayPicker($weekdays, multiSelect: true, mandatory: false)
     }
 }
-

@@ -4,6 +4,12 @@
 //
 //  Created by David Monagle on 28/3/2026.
 //
+// This file provides a bidirectional mapping between the ``RecurrenceRule`` Swift model and
+// the `RecurrenceProtoV1RecurrenceRule` protobuf message (and its constituent message types).
+//
+// Conversion TO protobuf: use the `init(_ rule:)` initialisers on the proto types.
+// Conversion FROM protobuf: use the `init(proto:)` throwing initialisers on the Swift types.
+// Errors are reported via ``RecurrenceProtoV1Error``.
 
 import Foundation
 import RecurrenceRule
@@ -12,6 +18,7 @@ import SwiftProtobuf
 // MARK: - Weekday
 
 extension RecurrenceProtoV1Weekday {
+    /// Converts a `Locale.Weekday` to its protobuf representation.
     public init(_ weekday: Locale.Weekday) {
         switch weekday {
         case .sunday: self = .sunday
@@ -27,6 +34,8 @@ extension RecurrenceProtoV1Weekday {
 }
 
 extension Locale.Weekday {
+    /// Converts a protobuf weekday to `Locale.Weekday`.
+    /// - Throws: ``RecurrenceProtoV1Error/invalidWeekday(_:)`` if the value is `.unspecified` or unrecognised.
     public init(proto: RecurrenceProtoV1Weekday) throws {
         switch proto {
         case .sunday: self = .sunday
@@ -45,12 +54,15 @@ extension Locale.Weekday {
 // MARK: - Month
 
 extension RecurrenceProtoV1Month {
+    /// Converts a ``RecurrenceMonth`` to its protobuf representation.
     public init(_ month: RecurrenceMonth) {
         self = RecurrenceProtoV1Month(rawValue: month.rawValue) ?? .unspecified
     }
 }
 
 extension RecurrenceMonth {
+    /// Converts a protobuf month to ``RecurrenceMonth``.
+    /// - Throws: ``RecurrenceProtoV1Error/invalidMonth(_:)`` if the raw value does not map to a known month.
     public init(proto: RecurrenceProtoV1Month) throws {
         guard let month = RecurrenceMonth(rawValue: proto.rawValue) else {
             throw RecurrenceProtoV1Error.invalidMonth(proto.rawValue)
@@ -62,6 +74,7 @@ extension RecurrenceMonth {
 // MARK: - MonthlyOrdinal
 
 extension RecurrenceProtoV1MonthlyOrdinal {
+    /// Converts a ``RecurrenceMonthlyOrdinal`` to its protobuf representation.
     public init(_ ordinal: RecurrenceMonthlyOrdinal) {
         switch ordinal {
         case .first: self = .first
@@ -76,6 +89,8 @@ extension RecurrenceProtoV1MonthlyOrdinal {
 }
 
 extension RecurrenceMonthlyOrdinal {
+    /// Converts a protobuf monthly ordinal to ``RecurrenceMonthlyOrdinal``.
+    /// - Throws: ``RecurrenceProtoV1Error/invalidOrdinal(_:)`` if the value is `.unspecified` or unrecognised.
     public init(proto: RecurrenceProtoV1MonthlyOrdinal) throws {
         switch proto {
         case .first: self = .first
@@ -94,6 +109,7 @@ extension RecurrenceMonthlyOrdinal {
 // MARK: - MonthDaysSelection
 
 extension RecurrenceProtoV1MonthDaysSelection {
+    /// Converts a ``RecurrenceRule/MonthDaysSelection`` to its protobuf representation.
     public init(_ selection: RecurrenceRule.MonthDaysSelection) {
         switch selection {
         case .every(let daysOfMonth):
@@ -110,6 +126,9 @@ extension RecurrenceProtoV1MonthDaysSelection {
 }
 
 extension RecurrenceRule.MonthDaysSelection {
+    /// Converts a protobuf month-days selection to ``RecurrenceRule/MonthDaysSelection``.
+    /// - Throws: ``RecurrenceProtoV1Error/missingMonthDaysSelection`` if the oneof is not set,
+    ///   or a nested error for invalid ordinals/weekdays.
     public init(proto: RecurrenceProtoV1MonthDaysSelection) throws {
         guard let selection = proto.selection else {
             throw RecurrenceProtoV1Error.missingMonthDaysSelection
@@ -128,6 +147,7 @@ extension RecurrenceRule.MonthDaysSelection {
 // MARK: - RecurrenceRule
 
 extension RecurrenceProtoV1RecurrenceRule {
+    /// Converts a ``RecurrenceRule`` to its protobuf representation.
     public init(_ rule: RecurrenceRule) {
         self.init()
         self.interval = Int32(rule.interval)
@@ -161,6 +181,8 @@ extension RecurrenceProtoV1RecurrenceRule {
 }
 
 extension RecurrenceRule {
+    /// Converts a protobuf recurrence rule message to a ``RecurrenceRule``.
+    /// - Throws: A ``RecurrenceProtoV1Error`` if any required field is missing or contains an invalid value.
     public init(proto: RecurrenceProtoV1RecurrenceRule) throws {
         let interval = Int(proto.interval)
 
@@ -202,10 +224,16 @@ extension RecurrenceRule {
 
 // MARK: - Errors
 
+/// Errors thrown when converting between ``RecurrenceRule`` and its protobuf representation.
 public enum RecurrenceProtoV1Error: Error, Sendable {
+    /// The protobuf weekday value is `.unspecified` or unrecognised. The associated value is the raw integer.
     case invalidWeekday(Int)
+    /// The protobuf month value does not correspond to a valid ``RecurrenceMonth``. The associated value is the raw integer.
     case invalidMonth(Int)
+    /// The protobuf ordinal value is `.unspecified` or unrecognised. The associated value is the raw integer.
     case invalidOrdinal(Int)
+    /// The protobuf frequency oneof field is not set.
     case missingFrequency
+    /// The protobuf month-days-selection oneof field is not set.
     case missingMonthDaysSelection
 }

@@ -8,17 +8,37 @@
 import SwiftUI
 import RecurrenceRule
 
+/// Observable state object that bridges individual UI field values to a ``RecurrenceRule``.
+///
+/// `RecurrenceState` is initialised from an existing `RecurrenceRule` and exposes flat,
+/// bindable properties (frequency, interval, weekdays, etc.) that SwiftUI views can bind to
+/// directly. The computed ``recurrenceRule`` property assembles those fields back into a
+/// `RecurrenceRule` at any time.
+///
+/// This class is an implementation detail of ``RecurrenceRuleView`` and is not typically
+/// used directly by consumers of the library.
 @Observable class RecurrenceState {
+    /// The selected recurrence frequency (daily, weekly, monthly, yearly).
     var frequency: FrequencyPicker.Option = .daily
+    /// The interval multiplier applied to the selected frequency.
     var interval: Int
+    /// The anchor start date for the recurrence.
     var start: Date
+    /// The termination condition for the recurrence.
     var end: RecurrenceRule.End
+    /// Whether the monthly/annual day selection is "every specific day" or "on the Nth weekday".
     var monthDaysSelection: MonthDaySelectionPicker.Option = .every
+    /// The set of numbered days of the month selected for an `.every` pattern.
     var daysOfMonth: Set<Int> = []
+    /// The ordinal position used for an `.onThe` monthly/annual pattern.
     var ordinal: RecurrenceMonthlyOrdinal = .first
+    /// The selected weekdays, used for weekly frequency and `.onThe` monthly/annual patterns.
     var weekDays: Set<Locale.Weekday> = []
+    /// The selected months used for an annual recurrence.
     var months: Set<RecurrenceMonth> = []
 
+    /// Initialises the state by decomposing an existing `RecurrenceRule` into its constituent fields.
+    /// - Parameter recurrenceRule: The rule whose values are used to populate the state.
     init(recurrenceRule: RecurrenceRule) {
         self.interval = recurrenceRule.interval
         self.start = recurrenceRule.start
@@ -37,7 +57,7 @@ import RecurrenceRule
             self.months = annually.months
             setMonthDaySelection(from: annually.days)
         }
-        
+
         func setMonthDaySelection(from days: RecurrenceRule.MonthDaysSelection) {
             switch days {
             case .every(let daysOfMonth):
@@ -50,7 +70,7 @@ import RecurrenceRule
             }
         }
     }
-    
+
     private var recurrenceMonthDays: RecurrenceRule.MonthDaysSelection {
         switch self.monthDaysSelection {
         case .every:
@@ -59,7 +79,8 @@ import RecurrenceRule
             return .onThe(ordinal: self.ordinal, weekDays: self.weekDays)
         }
     }
-    
+
+    /// Assembles the current field values into a ``RecurrenceRule``.
     var recurrenceRule: RecurrenceRule {
         switch frequency {
         case .daily:

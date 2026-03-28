@@ -4,6 +4,8 @@
 //
 //  Created by David Monagle on 7/9/2025.
 //
+// Note: All declarations in this file require macOS 15 / iOS 18 or later because they depend
+// on `Calendar.RecurrenceRule`, which was introduced in those OS versions.
 
 import Foundation
 

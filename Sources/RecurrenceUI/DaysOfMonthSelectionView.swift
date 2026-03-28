@@ -8,15 +8,37 @@
 import SwiftUI
 import RecurrenceRule
 
+/// A 7-column grid view for selecting specific days of the month (1–31).
+///
+/// Cells are rendered in a grid that mirrors a calendar layout. Selected days are highlighted
+/// with the accent colour. Double-tapping a cell sets the selection to that single day when
+/// `minSelections > 0`, or clears the selection otherwise.
+///
+/// Used by ``RecurrenceRuleView`` when the monthly or annual frequency is active with an
+/// `.every` day selection strategy.
+///
+/// ## Parameters
+/// - `daysOfMonth`: Binding to the selected days (integers 1–31).
+/// - `maxSize`: Maximum cell size in points (default `64`).
+/// - `multiSelect`: Allows multiple days when `true` (default `true`).
+/// - `minSelections`: Minimum number of days that must remain selected, or `nil` for no minimum.
+/// - `maxSelections`: Maximum number of days that can be selected, or `nil` for no maximum.
 public struct DaysOfMonthSelectionView: View {
     @Binding var daysOfMonth: Set<Int>
-    
+
     private var multiSelect: Bool
     private var maxSize: CGFloat?
     private var maxSelections: Int?
     private var minSelections: Int?
     @State private var rowHeight: CGFloat = .zero
 
+    /// Creates a `DaysOfMonthSelectionView`.
+    /// - Parameters:
+    ///   - daysOfMonth: Binding to the selected days (1–31).
+    ///   - maxSize: Maximum cell size in points (default `64`).
+    ///   - multiSelect: Allows multiple selections when `true` (default `true`).
+    ///   - minSelections: Minimum number of days that must remain selected (default `nil`).
+    ///   - maxSelections: Maximum number of days that can be selected (default `nil`).
     public init(selection daysOfMonth: Binding<Set<Int>>, maxSize: CGFloat? = 64, multiSelect: Bool = true, minSelections: Int? = nil, maxSelections: Int? = nil) {
         self._daysOfMonth = daysOfMonth
         self.maxSize = maxSize
@@ -33,15 +55,15 @@ public struct DaysOfMonthSelectionView: View {
             }
         }
     }
-    
+
     private var columns: [GridItem] {
         let item = GridItem(.flexible(minimum: 30, maximum: 60), spacing: 1)
         return .init(repeating: item, count: 7)
     }
-    
+
     private func cell(_ day: Int) -> some View {
         let isSelected = self.daysOfMonth.contains(day)
-        
+
         return Text("\(day)")
             .lineLimit(1)
             .minimumScaleFactor(0.5)
@@ -59,9 +81,9 @@ public struct DaysOfMonthSelectionView: View {
                 self.daysOfMonth = (minSelections ?? 0) > 0 ? [day] : []
             }
         )
-    
+
     }
-    
+
     private func toggle(_ day: Int) {
         if self.daysOfMonth.contains(day) {
             if let min = minSelections, daysOfMonth.count <= min { return }
@@ -83,7 +105,7 @@ fileprivate extension View {
     func cornerRadius(_ radius: CGFloat, for day: Int) -> some View {
         #if os(iOS)
         let corners: UIRectCorner
-        
+
         switch day {
         case 1:
             corners = [.topLeft]
@@ -98,7 +120,7 @@ fileprivate extension View {
         default:
             corners = []
         }
-        
+
         return self.cornerRadius(radius, corners: corners)
         #else
         return self
