@@ -192,7 +192,7 @@ extension RecurrenceRule {
     ///   - start: Anchor date (default `.now`).
     ///   - end: Termination condition (default `.never`).
     /// - Returns: A new `RecurrenceRule` with daily frequency.
-    static func daily(interval: Int = 1, start: Date = .now, end: End = .never) -> Self {
+    public static func daily(interval: Int = 1, start: Date = .now, end: End = .never) -> Self {
         .init(interval: interval, frequency: .daily(.init()), start: start, end: end)
     }
 }
